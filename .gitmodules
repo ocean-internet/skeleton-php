@@ -1,0 +1,9 @@
+[submodule "lib/doctrine2/common"]
+	path = lib/doctrine2/common
+	url = git://github.com/doctrine/common.git
+[submodule "lib/doctrine2/dbal"]
+	path = lib/doctrine2/dbal
+	url = git://github.com/doctrine/dbal.git
+[submodule "lib/smarty"]
+	path = lib/smarty
+	url = git://github.com/ericingram/smarty.git
