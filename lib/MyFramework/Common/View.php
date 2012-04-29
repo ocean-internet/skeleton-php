@@ -3,21 +3,16 @@ namespace MyFramework\Common;
 
 class View {
 
-	protected $heading;
-	protected $content;
+	protected $pageTitle;
+	protected $pageData;
 	
 	protected $FrontController;
-	
-	public function __construct(FrontController $FrontController) {
+	protected $TemplateEngine;
+
+
+	public function __construct(FrontController $FrontController, TemplateEngine $TemplateEngine) {
 		$this->FrontController = $FrontController;
-		require_once(SMARTY_DIR . 'Smarty.class.php');
-		$smarty = new \Smarty();
-		$smarty->template_dir = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'smarty' . DS . 'templates' . DS;
-		$smarty->compile_dir  = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'smarty' . DS . 'templates_c' . DS;
-		$smarty->config_dir   = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'smarty' . DS . 'configs' . DS;
-		$smarty->cache_dir    = ROOT . DS . APP_DIR . DS . 'tmp' . DS . 'smarty' . DS . 'cache' . DS;
-		
-		$this->smarty = $smarty;
+		$this->TemplateEngine  = $TemplateEngine;
 	}
 
 	public function __set($name, $value) {
@@ -26,11 +21,8 @@ class View {
 	}
 
 	public function render() {
-		$this->smarty->assign('pageTitle',   $this->heading);
-		$this->smarty->assign('pageContent', $this->content);
-		ob_start();
-		$this->smarty->display(TEMPLATES_DIR . DS . 'Layouts' . DS . 'default.tpl');
-		$view = ob_get_clean();		
-		print $view;
+		$this->TemplateEngine->pageTitle  = $this->pageTitle;
+		$this->TemplateEngine->set($this->pageData);
+		$this->TemplateEngine->render('Pages' . DS . 'home');
 	}
 }

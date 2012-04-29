@@ -38,7 +38,7 @@
 	  <h1>{$pageTitle}</h1>
   </header>
   <div role="main">
-	  <p>{$pageContent}</p>
+	  {$pageContent}
   </div>
   <footer>
 	  <p>The End</p>

@@ -1,9 +1,6 @@
 <?php
 namespace MyFramework\Common;
 
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 'stderr');
-
 /**
  * Use the DS to separate the directories in other defines
  */
@@ -18,25 +15,11 @@ ini_set('display_errors', 'stderr');
 		define('ROOT', dirname(dirname(__FILE__)) . DS . 'lib');
 	}	
 /**
- * The full path to the directory which holds "smarty", WITHOUT a trailing DS.
- *
- */
-	if (!defined('SMARTY_DIR ')) {
-		define('SMARTY_DIR', ROOT . DS . 'smarty' . DS . 'libs' . DS);
-	}
-/**
  * The actual directory name for the "MyApp".
  *
  */
 	if (!defined('APP_DIR')) {
 		define('APP_DIR',       'MyApp');
-	}
-/**
- * The full path to the directory which holds "smarty", WITHOUT a trailing DS.
- *
- */
-	if (!defined('TEMPLATES_DIR ')) {
-		define('TEMPLATES_DIR', ROOT . DS . APP_DIR . DS . 'View');
 	}
 /**
  * The directory name for "MyFramework"
@@ -45,13 +28,6 @@ ini_set('display_errors', 'stderr');
 		define('FRAMEWORK_DIR', 'MyFramework');
 	}
 
-// Class Auto Loader...
-require ROOT . DS . 'doctrine2/common/lib/Doctrine/Common/ClassLoader.php';
-$AppLoader       = new \Doctrine\Common\ClassLoader('MyApp',       ROOT);
-$FrameworkLoader = new \Doctrine\Common\ClassLoader('MyFramework', ROOT);
-$AppLoader->register();
-$FrameworkLoader->register();
-
 // Bootstrap the App...
 require ROOT . DS . FRAMEWORK_DIR . DS . 'Config' . DS . 'bootstrap.php'; // Framework constants & utility functions/classes
 require ROOT . DS . APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App       constants & utility functions/classes
@@ -59,7 +35,10 @@ require ROOT . DS . APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App
 $Request  = new Request($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES, $_ENV);
 $Response = new Response;
 
-$FrontController = new FrontController($Request, $Response);
+require SMARTY_DIR . 'Smarty.class.php';
+$TemplateEngine = new SmartyTemplateEngine(new \Smarty);
+
+$FrontController = new FrontController($Request, $Response, $TemplateEngine);
 
 // View object
 $View = $FrontController->dispatch();
