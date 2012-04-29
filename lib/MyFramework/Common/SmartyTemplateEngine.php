@@ -16,8 +16,8 @@ class SmartyTemplateEngine implements TemplateEngine {
 		$this->Smarty = $Smarty;
 	}
 	
-	public function set(array $vars) {
-		foreach ($vars as $k => $v) {
+	public function set(array $pageData) {
+		foreach ($pageData as $k => $v) {
 			$this->Smarty->assign($k, $v);
 		}
 	}

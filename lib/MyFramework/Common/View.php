@@ -3,8 +3,8 @@ namespace MyFramework\Common;
 
 class View {
 
-	protected $pageTitle;
-	protected $pageData;
+	protected $pageTitle = '';
+	protected $pageData  = array();
 	
 	protected $TemplateEngine;
 
