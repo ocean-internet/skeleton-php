@@ -6,12 +6,10 @@ class View {
 	protected $pageTitle;
 	protected $pageData;
 	
-	protected $FrontController;
 	protected $TemplateEngine;
 
 
-	public function __construct(FrontController $FrontController, TemplateEngine $TemplateEngine) {
-		$this->FrontController = $FrontController;
+	public function __construct(TemplateEngine $TemplateEngine) {
 		$this->TemplateEngine  = $TemplateEngine;
 	}
 

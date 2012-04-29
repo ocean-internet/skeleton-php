@@ -32,14 +32,10 @@ namespace MyFramework\Common;
 require ROOT . DS . FRAMEWORK_DIR . DS . 'Config' . DS . 'bootstrap.php'; // Framework constants & utility functions/classes
 require ROOT . DS . APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App       constants & utility functions/classes
 
-$Request  = new Request($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES, $_ENV);
-$Response = new Response;
-
 require SMARTY_DIR . 'Smarty.class.php';
-$TemplateEngine = new SmartyTemplateEngine(new \Smarty);
-
-$FrontController = new FrontController($Request, $Response, $TemplateEngine);
+$View            = new View(new SmartyTemplateEngine(new \Smarty));
+$FrontController = new FrontController($View);
 
 // View object
-$View = $FrontController->dispatch();
+$FrontController->dispatch();
 $View->render();

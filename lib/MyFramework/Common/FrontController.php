@@ -3,22 +3,15 @@ namespace MyFramework\Common;
 
 class FrontController {
 	
-	protected $Request;
-	protected $Response;
-	protected $TemplateEngine;
+	protected $View;
 
-	public function __construct(Request $Request, Response $Response, TemplateEngine $TemplateEngine) {
-		$this->Request        = $Request;
-		$this->Response       = $Response;
-		$this->TemplateEngine = $TemplateEngine;
+	public function __construct(View $View) {
+		$this->View = $View;
 	}	
 	
 	public function dispatch() {
 
-		$View = new View($this, $this->TemplateEngine);
-		$View->pageTitle = 'Hello World';
-		$View->pageData  = array('welcome' => 'Welcome to Skeleton PHP.');
-
-		return $View;	
+		$this->View->pageTitle = 'Hello World';
+		$this->View->pageData  = array('welcome' => 'Welcome to Skeleton PHP.');	
 	}
 }
