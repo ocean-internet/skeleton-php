@@ -16,6 +16,13 @@ ini_set('display_errors', 'stderr');
  */
 	if (!defined('ROOT')) {
 		define('ROOT', dirname(dirname(__FILE__)) . DS . 'lib');
+	}	
+/**
+ * The full path to the directory which holds "smarty", WITHOUT a trailing DS.
+ *
+ */
+	if (!defined('SMARTY_DIR ')) {
+		define('SMARTY_DIR', ROOT . DS . 'smarty' . DS . 'libs' . DS);
 	}
 /**
  * The actual directory name for the "MyApp".
@@ -23,6 +30,13 @@ ini_set('display_errors', 'stderr');
  */
 	if (!defined('APP_DIR')) {
 		define('APP_DIR',       'MyApp');
+	}
+/**
+ * The full path to the directory which holds "smarty", WITHOUT a trailing DS.
+ *
+ */
+	if (!defined('TEMPLATES_DIR ')) {
+		define('TEMPLATES_DIR', ROOT . DS . APP_DIR . DS . 'View');
 	}
 /**
  * The directory name for "MyFramework"
@@ -49,4 +63,4 @@ $FrontController = new FrontController($Request, $Response);
 
 // View object
 $View = $FrontController->dispatch();
-print $View->render();
+$View->render();
