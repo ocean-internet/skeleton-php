@@ -1,6 +1,15 @@
 <?php
 namespace MyFramework\Common;
 
+function pr($stuff) {
+	echo '<pre>';
+	print_r($stuff);
+	echo '</pre>';
+}
+
+pr($_SERVER);
+
+
 /**
  * Use the DS to separate the directories in other defines
  */
@@ -13,7 +22,7 @@ namespace MyFramework\Common;
  */
 	if (!defined('ROOT')) {
 		define('ROOT', dirname(dirname(__FILE__)) . DS . 'lib');
-	}	
+	}
 /**
  * The actual directory name for the "MyApp".
  *
@@ -33,8 +42,8 @@ require ROOT . DS . FRAMEWORK_DIR . DS . 'Config' . DS . 'bootstrap.php'; // Fra
 require ROOT . DS . APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App       constants & utility functions/classes
 
 require SMARTY_DIR . 'Smarty.class.php';
-$View            = new View(new SmartyTemplateEngine(new \Smarty));
-$FrontController = new FrontController($View);
+
+$FrontController = new FrontController(new Request($_SERVER), new View(new SmartyTemplateEngine(new \Smarty)));
 
 // View object
 $FrontController->dispatch();

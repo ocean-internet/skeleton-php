@@ -31,3 +31,7 @@ $FrameworkLoader->register();
 	if (!defined('TEMPLATES_DIR ')) {
 		define('TEMPLATES_DIR', ROOT . DS . APP_DIR . DS . 'View');
 	}
+
+define('CAMEL_BACK', '^[a-z]+(?:[A-Z][a-z]+)*$');
+define('CAMEL_CASE', '^[A-Z][a-z]+(?:[A-Z][a-z]+)*$');
+define('UUID',       '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}*$');
