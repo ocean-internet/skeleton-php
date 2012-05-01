@@ -36,7 +36,6 @@ class Request {
 			}
 			// pop index.php off the end
 			array_pop($scriptPath);
-			pr($scriptPath);
 		} else {
 			$scriptPath = array();
 		}
@@ -68,7 +67,6 @@ class Request {
 				$this->controller = 'Pages';
 			} else {
 				// sanitise controller name
-				pr($query);
 				$param = preg_replace('/[^a-zA-Z_\-]/', '', $param);
 
 				// turn underscored names into CamelCase
