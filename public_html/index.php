@@ -1,15 +1,6 @@
 <?php
 namespace MyFramework\Common;
 
-function pr($stuff) {
-	echo '<pre>';
-	print_r($stuff);
-	echo '</pre>';
-}
-
-pr($_SERVER);
-
-
 /**
  * Use the DS to separate the directories in other defines
  */
@@ -43,7 +34,9 @@ require ROOT . DS . APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App
 
 require SMARTY_DIR . 'Smarty.class.php';
 
-$FrontController = new FrontController(new Request($_SERVER), new View(new SmartyTemplateEngine(new \Smarty)));
+$Request = new Request($_SERVER, $_POST, $_FILES);
+$View    = new View(new SmartyTemplateEngine(new \Smarty));
+$FrontController = new FrontController($Request, $View);
 
 // View object
 $FrontController->dispatch();

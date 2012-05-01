@@ -10,6 +10,8 @@ $FrameworkLoader = new \Doctrine\Common\ClassLoader('MyFramework', ROOT);
 $AppLoader->register();
 $FrameworkLoader->register();
 
+require ROOT . DS . FRAMEWORK_DIR . DS . 'Config' . DS . 'functions.php';
+
 /**
  * The full path MyApp/tmp directory, WITHOUT a trailing DS.
  *
@@ -32,6 +34,6 @@ $FrameworkLoader->register();
 		define('TEMPLATES_DIR', ROOT . DS . APP_DIR . DS . 'View');
 	}
 
-define('CAMEL_BACK', '^[a-z]+(?:[A-Z][a-z]+)*$');
-define('CAMEL_CASE', '^[A-Z][a-z]+(?:[A-Z][a-z]+)*$');
-define('UUID',       '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}*$');
+define('CAMEL_BACK', '/^[a-z]+(?:[A-Z][a-z]+)*$/');
+define('CAMEL_CASE', '/^[A-Z][a-z]+(?:[A-Z][a-z]+)*$/');
+define('UUID',       '/^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/i');

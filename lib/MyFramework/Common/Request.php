@@ -3,14 +3,19 @@ namespace MyFramework\Common;
 
 class Request {
 
+	protected $server  = array();
+
 	protected $controller;
 	protected $action;
 	protected $id;
-	protected $filter = array();
-	protected $server = array();
+	protected $filters = array();
+	protected $data;
+	protected $files;
 
-	public function __construct($server) {
+	public function __construct($server, $post, $files) {
 		$this->server = $server;
+		$this->data   = $post;
+		$this->files  = $files;
 
 		$this->extract();
 	}
@@ -71,7 +76,7 @@ class Request {
 				// it's a param, and not an id
 				array_unshift($query, $param);
 			} else {
-				$id = preg_replace('/[^a-zA-Z]/', '', $action);
+				$id = preg_replace('/[^a-fA-F0-9\-]/', '', $param);
 
 				if(is_numeric($id) || preg_match(UUID, $id)) {
 					$this->id = $id;
@@ -81,7 +86,26 @@ class Request {
 			}
 		}
 
-		// @TODO: extract filter(s)
+		// extract filter(s)
+		if(!empty($query)) {
+			foreach($query as $param) {
+				if(strpos($param, ':')) {
+
+					$param = explode(':', $param, 2);
+
+					if(2 != count($param)) {
+						throw new filterNotValidException($param);
+					}
+
+					$param[0] = preg_replace('/[^a-zA-Z]/', '', $param[0]);
+					if(!preg_match(CAMEL_BACK, $param[0])) {
+						throw new filterNotValidException($param);
+					}
+
+					$this->filters[$param[0]] = $param[1];
+				}
+			}
+		}
 
 	}
 }
