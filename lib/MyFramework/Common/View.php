@@ -5,7 +5,7 @@ class View {
 
 	protected $pageTitle = '';
 	protected $pageData  = array();
-	
+
 	protected $TemplateEngine;
 
 
@@ -14,8 +14,12 @@ class View {
 	}
 
 	public function __set($name, $value) {
-		// do some sanitisation before setting these values...        	
+		// do some sanitisation before setting these values...
 		$this->$name = $value;
+	}
+
+	public function __get($value) {
+		return $this->$value;
 	}
 
 	public function render() {

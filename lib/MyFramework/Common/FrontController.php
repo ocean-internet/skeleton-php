@@ -5,14 +5,17 @@ class FrontController {
 
 	protected $View;
 
-	public function __construct(Request $Request, View $View) {
+	public function __construct(Request $Request, Router $Router, View $View) {
 
-		$this->View = $View;
+		$this->Request = $Request;
+		$this->Router  = $Router;
+		$this->View    = $View;
 	}
 
 	public function dispatch() {
 
-		$this->View->pageTitle = 'Hello World';
-		$this->View->pageData  = array('welcome' => 'Welcome to Skeleton PHP.');
+		$Controller = $this->Router->route();
+		$this->View->pageTitle = $Controller->pageTitle;
+		$this->View->pageData  = $Controller->pageData;
 	}
 }

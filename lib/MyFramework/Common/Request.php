@@ -41,31 +41,44 @@ class Request {
 
 		$query = array_merge(array_diff($scriptPath, $redirect), array_diff($redirect, $scriptPath));
 
-		$urlValid = TRUE;
 		// extract requested controller
 		if(!empty($query)) {
 
-			$controller = array_shift($query);
-			$controller = preg_replace('/[^a-zA-Z]/', '', $controller);
-
-			if(preg_match(CAMEL_CASE, $controller)) {
-				$this->controller = $controller;
+			$param  = array_shift($query);
+			if(strpos($param, ':')) {
+				// it's a param, and not an id
+				array_unshift($query, $param);
 			} else {
-				throw new controllerNotValidEexeption($controller);
+				$param = preg_replace('/[^a-zA-Z]/', '', $param);
+
+				if(preg_match(CAMEL_CASE, $param)) {
+					$this->controller = $param;
+				} else {
+					throw new controllerNotValidEexeption($param);
+				}
 			}
+		} else {
+			$this->controller = 'Pages';
 		}
 
 		// extract requested action
 		if(!empty($query)) {
 
-			$action = array_shift($query);
-			$action = preg_replace('/[^a-zA-Z]/', '', $action);
-
-			if(preg_match(CAMEL_BACK, $action)) {
-				$this->action = $action;
+			$param  = array_shift($query);
+			if(strpos($param, ':')) {
+				// it's a param, and not an id
+				array_unshift($query, $param);
 			} else {
-				throw new actionNotValidExeption($action);
+				$param = preg_replace('/[^a-zA-Z]/', '', $param);
+
+				if(preg_match(CAMEL_BACK, $param)) {
+					$this->action = $param;
+				} else {
+					throw new actionNotValidExeption($param);
+				}
 			}
+		} else {
+			$this->action = 'index';
 		}
 
 		// extract id
