@@ -2,7 +2,7 @@
 
 namespace MyFramework\Common;
 
-require_once dirname(__FILE__) . '/../../../../lib/MyFramework/Common/Request.php';
+require_once FRAMEWORK_DIR . DS . 'Common' . DS . 'Request.php';
 
 /**
  * Test class for Request.

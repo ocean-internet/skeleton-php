@@ -1,6 +1,5 @@
 <?php
 namespace MyFramework\Common;
-
 /**
  * Use the DS to separate the directories in other defines
  */
@@ -12,21 +11,21 @@ namespace MyFramework\Common;
  *
  */
 	if (!defined('ROOT')) {
-		define('ROOT', dirname(dirname(__FILE__)) . DS . 'lib');
+		define('ROOT', dirname(dirname(dirname(__FILE__))) . DS . 'lib');
 	}
 /**
  * The actual directory name for the "MyApp".
  *
  */
 	if (!defined('APP_NAME')) {
-		define('APP_NAME', 'MyApp');
+		define('APP_NAME', 'TestApp');
 	}
 /**
  * The actual directory name for the "MyApp".
  *
  */
 	if (!defined('APP_DIR')) {
-		define('APP_DIR',       ROOT . DS . APP_NAME);
+		define('APP_DIR', dirname(__FILE__) . DS . APP_NAME);
 	}
 /**
  * The directory name for "MyFramework"
@@ -38,14 +37,3 @@ namespace MyFramework\Common;
 // Bootstrap the App...
 require FRAMEWORK_DIR . DS . 'Config' . DS . 'bootstrap.php'; // Framework constants & utility functions/classes
 require APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App       constants & utility functions/classes
-
-require SMARTY_DIR . 'Smarty.class.php';
-
-$Request = new Request($_SERVER, $_POST, $_FILES);
-$Router  = new Router($Request);
-$View    = new View(new SmartyTemplateEngine(new \Smarty));
-$FrontController = new FrontController($Request, $Router, $View);
-
-// View object
-$FrontController->dispatch();
-$View->render();

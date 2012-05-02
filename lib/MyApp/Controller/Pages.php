@@ -10,6 +10,5 @@ class Pages {
 	public $pageData  = array('welcome' => 'Welcome to my world...');
 
 	public function index($id) {
-		return(TRUE);
 	}
 }

@@ -10,23 +10,26 @@ class Router {
 	}
 
 	public function route() {
-		$class = 'MyApp\Controller\\' . $this->Request->controller;
-		if(!class_exists($class)) {
-			throw new invalidClassException($class);
+
+		$classFile = APP_DIR . DS . 'Controller' . DS . $this->Request->controller . '.php';
+		if(!file_exists($classFile)) {
+			throw new invalidControllerFileException($this->Request->controller);
 		}
 
-		$Controller = new $class;
+		$class = APP_NAME . '\Controller\\' . $this->Request->controller;
+		if(!class_exists($class)) {
+			throw new invalidControllerException($class);
+		}
+
+		$Controller = new $class($this->Request);
 
 		$method = $this->Request->action;
 		if(!method_exists($Controller, $method)) {
 			throw new invalidMethodExeption($method);
 		}
 
-		$Controller->Request = $this->Request;
+		$Controller->$method($this->Request->id);
 
-		if(!$Controller->$method($this->Request->id)) {
-			throw new controllerActionReturnedFalseException();
-		}
 		return $Controller;
 	}
 }

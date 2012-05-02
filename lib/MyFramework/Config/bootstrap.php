@@ -4,20 +4,20 @@ ini_set('display_errors', 'stderr');
 
 // Class Auto Loader...
 require ROOT . DS . 'doctrine2/common/lib/Doctrine/Common/ClassLoader.php';
-$AppLoader       = new \Doctrine\Common\ClassLoader('MyApp',       ROOT);
+$AppLoader       = new \Doctrine\Common\ClassLoader(APP_NAME, dirname(APP_DIR));
 $FrameworkLoader = new \Doctrine\Common\ClassLoader('MyFramework', ROOT);
 
 $AppLoader->register();
 $FrameworkLoader->register();
 
-require ROOT . DS . FRAMEWORK_DIR . DS . 'Config' . DS . 'functions.php';
+require FRAMEWORK_DIR . DS . 'Config' . DS . 'functions.php';
 
 /**
  * The full path MyApp/tmp directory, WITHOUT a trailing DS.
  *
  */
 	if (!defined('TMP_DIR')) {
-		define('TMP_DIR', ROOT . DS . APP_DIR . DS . 'tmp');
+		define('TMP_DIR', APP_DIR . DS . 'tmp');
 	}
 /**
  * The full path to the directory which holds "smarty", WITH a trailing DS.
@@ -31,7 +31,7 @@ require ROOT . DS . FRAMEWORK_DIR . DS . 'Config' . DS . 'functions.php';
  *
  */
 	if (!defined('TEMPLATES_DIR ')) {
-		define('TEMPLATES_DIR', ROOT . DS . APP_DIR . DS . 'View');
+		define('TEMPLATES_DIR', APP_DIR . DS . 'View');
 	}
 
 define('CAMEL_BACK', '/^[a-z]+(?:[A-Z][a-z]+)*$/');
