@@ -1,5 +1,4 @@
 <?php
-
 namespace MyFramework\Common;
 
 require_once FRAMEWORK_DIR . DS . 'Common' . DS . 'Request.php';
@@ -174,5 +173,80 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
 		$this->assertEquals($this->object->id,         '123', 'id set to 123');
 		$this->assertEquals($this->object->filters,    array('paramName' => 123, 'anotherParam' => 'abc'), 'filters set');
+	}
+
+	public function testControllerNotValid() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/COntrollerName/action_name/123/param_name:123/another_param:abc'
+		);
+
+		// act
+		try {
+            $this->object = new Request($server, NUll, NULL);
+        }
+        catch (\MyFramework\Exception\ControllerNotValidException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An ControllerNotValidException has not been raised.');
+
+	}
+	public function testActionNotValid() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/actioNName/123/param_name:123/another_param:abc'
+		);
+
+		// act
+		try {
+            $this->object = new Request($server, NUll, NULL);
+        }
+        catch (\MyFramework\Exception\ActionNotValidException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An ActionNotValidException has not been raised.');
+
+	}
+
+	public function testIdNotValid() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action_name/1a2b3c/param_name:123/another_param:abc'
+		);
+
+		// act
+		try {
+            $this->object = new Request($server, NUll, NULL);
+        }
+        catch (\MyFramework\Exception\IdNotValidException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An IdNotValidException has not been raised.');
+
+	}
+
+	public function testFilterNotValid() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action_name/123/paraMName:123/another_param:abc'
+		);
+
+		// act
+		try {
+            $this->object = new Request($server, NUll, NULL);
+        }
+        catch (\MyFramework\Exception\FilterNotValidException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An FilterNotValidException has not been raised.');
+
 	}
 }

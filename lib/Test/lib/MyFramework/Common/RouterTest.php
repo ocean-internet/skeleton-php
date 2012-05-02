@@ -1,5 +1,4 @@
 <?php
-
 namespace MyFramework\Common;
 
 require_once FRAMEWORK_DIR . DS . 'Common' . DS . 'Router.php';
@@ -28,5 +27,3 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 }
-
-?>

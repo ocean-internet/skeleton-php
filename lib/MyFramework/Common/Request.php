@@ -73,7 +73,7 @@ class Request {
 				$param = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $param)));
 				// check for a valid name
 				if(!preg_match(CAMEL_CASE, $param)) {
-					throw new controllerNotValidEexeption($param);
+					throw new \MyFramework\Exception\ControllerNotValidException($param);
 				}
 				// set the requested controller (Class) name
 				$this->controller = $param;
@@ -100,7 +100,7 @@ class Request {
 				$param = lcfirst(str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $param))));
 				// check for a valid name
 				if(!preg_match(CAMEL_BACK, $param)) {
-					throw new actionNotValidExeption($param);
+					throw new \MyFramework\Exception\ActionNotValidException($param);
 				}
 				// set the requested action (method) name
 				$this->action = $param;
@@ -123,7 +123,7 @@ class Request {
 				$id = preg_replace('/[^a-fA-F0-9\-]/', '', $param);
 				// check for valid id
 				if(!is_numeric($id) && !preg_match(UUID, $id)) {
-					throw new idNotValidExeption($id);
+					throw new \MyFramework\Exception\IdNotValidException($id);
 				}
 				// set the requested id
 				$this->id = $id;
@@ -143,7 +143,7 @@ class Request {
 
 					$param[0] = lcfirst(str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $param[0]))));
 					if(!preg_match(CAMEL_BACK, $param[0])) {
-						throw new filterNotValidException($param);
+						throw new \MyFramework\Exception\FilterNotValidException($param[0]);
 					}
 
 					$this->filters[$param[0]] = $param[1];
