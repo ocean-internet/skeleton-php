@@ -20,15 +20,159 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 	 * @todo Implement test__get().
 	 */
 	public function testEmptyConstruct() {
+		// arrange
+
 		// act
 		$this->object = new Request(NULL, NUll, NULL);
 
+		// assert
 		$this->assertEquals($this->object->controller, 'Pages', 'controller set to default: Pages');
 		$this->assertEquals($this->object->action,     'index', 'action set to default: index');
 		$this->assertEquals($this->object->id,         NULL,    'id set to null');
 		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
 	}
 
-}
+	public function testExtractsCamelCaseController() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/ControllerName'
+		);
 
-?>
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'index', 'action set to default: index');
+		$this->assertEquals($this->object->id,         NULL,    'id set to null');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsUnderscoreController() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'index', 'action set to default: index');
+		$this->assertEquals($this->object->id,         NULL,    'id set to null');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsDashedController() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller-name'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'index', 'action set to default: index');
+		$this->assertEquals($this->object->id,         NULL,    'id set to null');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsCamelBackAction() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/actionName'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         NULL,    'id set to null');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsUnderscoreAction() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action_name'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         NULL,    'id set to null');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsDashedAction() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action-name'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         NULL,    'id set to null');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsNumericId() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action_name/123'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         123,    'id set to 123');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsUuid() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action_name/259e5f70-9431-11e1-b0c4-0800200c9a66'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         '259e5f70-9431-11e1-b0c4-0800200c9a66', 'id set to 259e5f70-9431-11e1-b0c4-0800200c9a66');
+		$this->assertEquals($this->object->filters,    array(), 'filters set to empty array');
+	}
+
+	public function testExtractsParams() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/controller_name/action_name/123/param_name:123/another_param:abc'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'ControllerName', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'actionName', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         '123', 'id set to 123');
+		$this->assertEquals($this->object->filters,    array('paramName' => 123, 'anotherParam' => 'abc'), 'filters set');
+	}
+}

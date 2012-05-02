@@ -141,7 +141,7 @@ class Request {
 						throw new filterNotValidException($param);
 					}
 
-					$param[0] = preg_replace('/[^a-zA-Z]/', '', $param[0]);
+					$param[0] = lcfirst(str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $param[0]))));
 					if(!preg_match(CAMEL_BACK, $param[0])) {
 						throw new filterNotValidException($param);
 					}
