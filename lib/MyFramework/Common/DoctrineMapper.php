@@ -13,6 +13,8 @@ $DbalLoader->register();
  */
 class DoctrineMapper implements Mapper {
 
+	public $dbTable;
+
 	protected $database;
 
 	public function __construct($params) {
@@ -21,8 +23,34 @@ class DoctrineMapper implements Mapper {
 	}
 
 	public function findAll(array $params=array()) {
+		$params = $this->processParams($params);
+		$query  =  'SELECT ' . $params['fields'];
+		$query .= ' FROM `' . $this->dbTable . '`';
+		return $this->database->fetchAll($query);
 	}
 
 	public function findById($id, array $params=array()) {
+		$params = $this->processParams($params);
+		$query  =  'SELECT ' . $params['fields'];
+		$query .= ' FROM `' . $this->dbTable . '`';
+		$query .= ' WHERE `id` = ' . $this->database->quote($id);
+		$query .= ' LIMIT 1';
+		$record = $this->database->fetchAll($query);
+		return array_pop($record);
+	}
+
+	protected function processParams(array $params=array()) {
+		if(!empty($params['fields'])) {
+			foreach($params['fields'] as $k => $v) {
+				$tmp  = '`' . $this->dbTable . '`';
+				$tmp .= '.';
+				$tmp .= '`' . $v . '`';
+				$params['fields'][$k] = $tmp;
+			}
+			$params['fields'] = implode(', ', $params['fields']);
+		} else {
+			$params['fields'] = '*';
+		}
+		return $params;
 	}
 }

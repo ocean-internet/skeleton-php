@@ -1,9 +1,9 @@
 <?php
 
 $dbCconnectionParams = array(
-    'dbname'   => 'db_name',
-    'user'     => 'db_user',
-    'password' => 'db_host',
+    'dbname'   => 'skeleton_dev',
+    'user'     => 'skeleton_dev',
+    'password' => 'skeleton_dev',
     'host'     => 'localhost',
     'driver'   => 'pdo_mysql',
 );

@@ -6,8 +6,8 @@ namespace MyApp\Controller;
  * @author andy
  */
 class Pages {
-	public $pageTitle = 'Hello World.';
-	public $pageData  = array('welcome' => 'Welcome to my world...');
+	public $pageTitle = 'Welcome';
+	public $pageData  = array();
 
 	protected $Request;
 	protected $Mapper;
@@ -15,9 +15,29 @@ class Pages {
 	public function __construct(\MyFramework\Common\Request $Request, \MyFramework\Common\Mapper $Mapper) {
 		$this->Request = $Request;
 		$this->Mapper  = $Mapper;
+		$this->Mapper->dbTable = 'pages';
 	}
 
-	public function index($id) {
-		$this->Mapper->findAll();
+	public function index() {
+		$Pages = $this->Mapper->findAll(array(
+			'fields' => array('id', 'title', 'short_title', 'intro')
+		));
+		$this->pageTitle = 'Pages';
+		$this->pageData['Pages'] = $Pages;
+		$this->pageData['menu'] = $this->menu();
+	}
+
+	public function view($id) {
+		$Page = $this->Mapper->findById($id);
+		$this->pageTitle = $Page['title'];
+		$this->pageData  = $Page;
+		$this->pageData['menu'] = $this->menu();
+	}
+
+	protected function menu() {
+		$Pages = $this->Mapper->findAll(array(
+			'fields' => array('id', 'title', 'short_title')
+		));
+		return $Pages;
 	}
 }

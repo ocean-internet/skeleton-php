@@ -1,7 +1,7 @@
 <?php
 namespace MyFramework\Common;
 
-class Router {
+class ControllerFactory {
 
 	protected $Request;
 	protected $Mapper;
