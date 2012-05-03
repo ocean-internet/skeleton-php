@@ -175,7 +175,23 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->object->filters,    array('paramName' => 123, 'anotherParam' => 'abc'), 'filters set');
 	}
 
-	public function testControllerNotValid() {
+	public function testExtractsParamsWithDefaultRoute() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/param_name:123/another_param:abc'
+		);
+
+		// act
+		$this->object = new Request($server, NUll, NULL);
+
+		$this->assertEquals($this->object->controller, 'Pages', 'controller set to: ControllerName');
+		$this->assertEquals($this->object->action,     'index', 'action set to: actionName');
+		$this->assertEquals($this->object->id,         NULL, 'id set to NULL');
+		$this->assertEquals($this->object->filters,    array('paramName' => 123, 'anotherParam' => 'abc'), 'filters set');
+	}
+
+	public function testThrowsControllerNotValidException() {
 		// arrange
 		$server = array(
 			'SCRIPT_NAME'  => '/index.php',
@@ -193,7 +209,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $this->fail('An ControllerNotValidException has not been raised.');
 
 	}
-	public function testActionNotValid() {
+	public function testThrowsActionNotValidException() {
 		// arrange
 		$server = array(
 			'SCRIPT_NAME'  => '/index.php',
@@ -212,7 +228,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
-	public function testIdNotValid() {
+	public function testThrowsIdNotValidException() {
 		// arrange
 		$server = array(
 			'SCRIPT_NAME'  => '/index.php',
@@ -231,7 +247,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
-	public function testFilterNotValid() {
+	public function testThrowsFilterNotValidException() {
 		// arrange
 		$server = array(
 			'SCRIPT_NAME'  => '/index.php',
@@ -247,6 +263,5 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         }
 		// assert
         $this->fail('An FilterNotValidException has not been raised.');
-
 	}
 }
