@@ -138,7 +138,7 @@ class Request {
 					$param = explode(':', $param, 2);
 
 					if(2 != count($param)) {
-						throw new filterNotValidException($param);
+						throw new \MyFramework\Exception\FilterNotValidException($param);
 					}
 
 					$param[0] = lcfirst(str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $param[0]))));
