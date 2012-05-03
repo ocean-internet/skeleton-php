@@ -4,9 +4,11 @@ namespace MyFramework\Common;
 class Router {
 
 	protected $Request;
+	protected $Mapper;
 
-	public function __construct(Request $Request) {
+	public function __construct(Request $Request, Mapper $Mapper) {
 		$this->Request = $Request;
+		$this->Mapper  = $Mapper;
 	}
 
 	public function route() {
@@ -20,7 +22,7 @@ class Router {
 			throw new \MyFramework\Exception\InvalidControllerClassException($class);
 		}
 
-		$Controller = new $class($this->Request);
+		$Controller = new $class($this->Request, $this->Mapper);
 
 		$method = $this->Request->action;
 		if(!method_exists($Controller, $method)) {
