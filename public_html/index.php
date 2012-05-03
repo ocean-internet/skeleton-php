@@ -42,8 +42,9 @@ require APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App       const
 require SMARTY_DIR . 'Smarty.class.php';
 
 $Request = new Request($_SERVER, $_POST, $_FILES);
-$Router  = new Router($Request);
-$View    = new View(new SmartyTemplateEngine(new \Smarty));
+$Mapper  = new DoctrineMapper($dbCconnectionParams);
+$Router  = new Router($Request, $Mapper);
+$View    = new View($Request, new SmartyTemplateEngine(new \Smarty));
 $FrontController = new FrontController($Request, $Router, $View);
 
 // View object

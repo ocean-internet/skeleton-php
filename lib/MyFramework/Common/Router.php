@@ -4,28 +4,29 @@ namespace MyFramework\Common;
 class Router {
 
 	protected $Request;
+	protected $Mapper;
 
-	public function __construct(Request $Request) {
+	public function __construct(Request $Request, Mapper $Mapper) {
 		$this->Request = $Request;
+		$this->Mapper  = $Mapper;
 	}
 
 	public function route() {
-
 		$classFile = APP_DIR . DS . 'Controller' . DS . $this->Request->controller . '.php';
 		if(!file_exists($classFile)) {
-			throw new invalidControllerFileException($this->Request->controller);
+			throw new \MyFramework\Exception\InvalidControllerFileException($classFile);
 		}
 
 		$class = APP_NAME . '\Controller\\' . $this->Request->controller;
 		if(!class_exists($class)) {
-			throw new invalidControllerException($class);
+			throw new \MyFramework\Exception\InvalidControllerClassException($class);
 		}
 
-		$Controller = new $class($this->Request);
+		$Controller = new $class($this->Request, $this->Mapper);
 
 		$method = $this->Request->action;
 		if(!method_exists($Controller, $method)) {
-			throw new invalidMethodExeption($method);
+			throw new \MyFramework\Exception\InvalidControllerMethodException($method);
 		}
 
 		$Controller->$method($this->Request->id);

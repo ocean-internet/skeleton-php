@@ -11,7 +11,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @covers MyFramework\Common\Router::route
-	 * @todo Implement testRoute().
+	 *
 	 */
 	public function testRoute() {
 		// arrange
@@ -26,4 +26,63 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('index run with id: ' . NULL, $Controller->indexRun, 'controller ran index method');
 	}
 
+	public function testThrowsInvalidControllerFileException() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/invalid_controller'
+		);
+		$Request = new Request($server, NULL, NULL);
+		$Router  = new Router($Request);
+
+		// act
+		try {
+            $Router->route();
+        }
+        catch (\MyFramework\Exception\InvalidControllerFileException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An InvalidControllerFileException has not been raised.');
+	}
+
+	public function testThrowsInvalidControllerClassException() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/empty_controller_file'
+		);
+		$Request = new Request($server, NULL, NULL);
+		$Router  = new Router($Request);
+
+		// act
+		try {
+            $Router->route();
+        }
+        catch (\MyFramework\Exception\InvalidControllerClassException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An InvalidControllerClassException has not been raised.');
+	}
+
+	public function testThrowsInvalidControllerMethodException() {
+		// arrange
+		$server = array(
+			'SCRIPT_NAME'  => '/index.php',
+			'REDIRECT_URL' => '/pages/invalid_method'
+		);
+		$Request = new Request($server, NULL, NULL);
+		$Router  = new Router($Request);
+
+		// act
+		try {
+            $Router->route();
+        }
+        catch (\MyFramework\Exception\InvalidControllerMethodException $expected) {
+            return;
+        }
+		// assert
+        $this->fail('An InvalidControllerMethodException has not been raised.');
+	}
 }

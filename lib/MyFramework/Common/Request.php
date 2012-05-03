@@ -43,8 +43,6 @@ class Request {
 		if(!empty($this->server['REDIRECT_URL'])) {
 			// e.g. /controller/action/1/param:123 or /admin/controller/action/1/param:123 (if in sub-directory)
 			$redirect = explode(DS, $this->server['REDIRECT_URL']);
-		} elseif(!empty($this->server['REQUEST_URI'])) {
-			$redirect = explode(DS, $this->server['REQUEST_URI']);
 		} else {
 			$redirect = array();
 		}
@@ -136,10 +134,6 @@ class Request {
 				if(strpos($param, ':')) {
 
 					$param = explode(':', $param, 2);
-
-					if(2 != count($param)) {
-						throw new \MyFramework\Exception\FilterNotValidException($param);
-					}
 
 					$param[0] = lcfirst(str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $param[0]))));
 					if(!preg_match(CAMEL_BACK, $param[0])) {
