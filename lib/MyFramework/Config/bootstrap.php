@@ -11,7 +11,7 @@ $AppLoader->register();
 $FrameworkLoader->register();
 
 require FRAMEWORK_DIR . DS . 'Config' . DS . 'functions.php';
-require FRAMEWORK_DIR . DS . 'Config' . DS . 'database.php';
+require APP_DIR       . DS . 'Config' . DS . 'database.php';
 
 /**
  * The full path MyApp/tmp directory, WITHOUT a trailing DS.

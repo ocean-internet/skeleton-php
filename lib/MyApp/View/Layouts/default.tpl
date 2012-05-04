@@ -14,7 +14,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>{$pageTitle}</title>
-  <meta name="description" content="">
+  {if isset($description)}<meta name="description" content="{$description|escape}">{/if}
+  {if isset($keywords)}<meta name="keywords"    content="{$keywords|escape}">{/if}
 
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width">
@@ -37,6 +38,7 @@
   <header>
 	  <h1>{$pageTitle}</h1>
   </header>
+  <nav>{include file='Elements/menu.tpl'}</nav>
   <div role="main">
 	  {$pageContent}
   </div>

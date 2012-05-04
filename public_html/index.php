@@ -1,5 +1,9 @@
 <?php
 namespace MyFramework\Common;
+$time = microtime();
+$time = explode(' ', $time);
+$time = $time[1] + $time[0];
+$start = $time;
 
 /**
  * Use the DS to separate the directories in other defines
@@ -43,10 +47,17 @@ require SMARTY_DIR . 'Smarty.class.php';
 
 $Request = new Request($_SERVER, $_POST, $_FILES);
 $Mapper  = new DoctrineMapper($dbCconnectionParams);
-$Router  = new Router($Request, $Mapper);
+$ControllerFactory  = new ControllerFactory($Request, $Mapper);
 $View    = new View($Request, new SmartyTemplateEngine(new \Smarty));
-$FrontController = new FrontController($Request, $Router, $View);
+$FrontController = new FrontController($Request, $ControllerFactory, $View);
 
 // View object
 $FrontController->dispatch();
 $View->render();
+
+$time = microtime();
+$time = explode(' ', $time);
+$time = $time[1] + $time[0];
+$finish = $time;
+$total_time = round(($finish - $start), 4);
+echo '<!-- Page generated in '.$total_time.' seconds. -->';

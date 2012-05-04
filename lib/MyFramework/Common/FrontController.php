@@ -5,16 +5,16 @@ class FrontController {
 
 	protected $View;
 
-	public function __construct(Request $Request, Router $Router, View $View) {
+	public function __construct(Request $Request, ControllerFactory $ControllerFactory, View $View) {
 
 		$this->Request = $Request;
-		$this->Router  = $Router;
+		$this->ControllerFactory  = $ControllerFactory;
 		$this->View    = $View;
 	}
 
 	public function dispatch() {
 
-		$Controller = $this->Router->route();
+		$Controller = $this->ControllerFactory->route();
 		$this->View->pageTitle = $Controller->pageTitle;
 		$this->View->pageData  = $Controller->pageData;
 	}
