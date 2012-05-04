@@ -45,15 +45,23 @@ require APP_DIR       . DS . 'Config' . DS . 'bootstrap.php'; // App       const
 
 require SMARTY_DIR . 'Smarty.class.php';
 
-$Request = new Request($_SERVER, $_POST, $_FILES);
-$Mapper  = new DoctrineMapper($dbCconnectionParams);
-$ControllerFactory  = new ControllerFactory($Request, $Mapper);
-$View    = new View($Request, new SmartyTemplateEngine(new \Smarty));
-$FrontController = new FrontController($Request, $ControllerFactory, $View);
-
-// View object
-$FrontController->dispatch();
-$View->render();
+try {
+	$Request = new Request($_SERVER, $_POST, $_FILES);
+	$Mapper  = new DoctrineMapper($dbCconnectionParams);
+	$ControllerFactory  = new ControllerFactory($Request, $Mapper);
+	$View    = new View($Request, new SmartyTemplateEngine(new \Smarty));
+	$FrontController = new FrontController($Request, $ControllerFactory, $View);
+	$FrontController->dispatch();
+	$View->render();
+} catch(\MyFramework\Exception\PageNotFoundException $exception) {
+	header("HTTP/1.0 404 Not Found");
+	echo 'Message: ' . $exception->getMessage();
+	exit;
+} catch (\Exception $exception) {
+	header("HTTP/1.0 500 Server Error");
+	echo 'Message: ' . $exception->getMessage();
+	exit;
+}
 
 $time = microtime();
 $time = explode(' ', $time);

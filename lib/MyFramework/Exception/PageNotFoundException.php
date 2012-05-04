@@ -6,5 +6,4 @@ namespace MyFramework\Exception;
  * @author goofys
  */
 class PageNotFoundException extends \Exception {
-	//put your code here
 }
