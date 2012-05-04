@@ -1,9 +1,9 @@
 <?php
 
 $dbCconnectionParams = array(
-    'dbname'   => 'db_name',
-    'user'     => 'db_user',
-    'password' => 'db_host',
-    'host'     => 'localhost',
-    'driver'   => 'pdo_mysql',
+    'dbname'   => 'andyphp_dev',
+    'user'     => 'andyphp_dev',
+    'password' => 'ZMSdrU2yhEYAFJv7',
+    'host'     => '192.168.0.55',
+    'driver'   => 'pdo_mysql'
 );
