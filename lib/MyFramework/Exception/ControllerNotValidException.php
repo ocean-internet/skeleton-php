@@ -6,5 +6,8 @@ namespace MyFramework\Exception;
  * @author goofys
  */
 class ControllerNotValidException extends PageNotFoundException {
-	//put your code here
+
+	public function __construct($message="", $code=0, \Exception $previous=NULL) {
+		parent::__construct('Controller name "' . $message . '" is not valid.', $code, $previous);
+	}
 }

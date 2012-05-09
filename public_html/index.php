@@ -55,11 +55,15 @@ try {
 	$View->render();
 } catch(\MyFramework\Exception\PageNotFoundException $exception) {
 	header("HTTP/1.0 404 Not Found");
-	echo 'Message: ' . $exception->getMessage();
+	echo '<pre>';
+	echo $exception;
+	echo '</pre>';
 	exit;
 } catch (\Exception $exception) {
 	header("HTTP/1.0 500 Server Error");
-	echo 'Message: ' . $exception->getMessage();
+	echo '<pre>';
+	echo $exception;
+	echo '</pre>';
 	exit;
 }
 

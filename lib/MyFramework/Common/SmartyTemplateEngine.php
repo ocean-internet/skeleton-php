@@ -23,9 +23,7 @@ class SmartyTemplateEngine implements TemplateEngine {
 	}
 
 	public function render($template, $layout='default') {
-		ob_start();
-		$this->Smarty->display(TEMPLATES_DIR . DS . $template . '.tpl');
-		$this->pageContent = ob_get_clean();
+		$this->pageContent = $this->Smarty->fetch(TEMPLATES_DIR . DS . $template . '.tpl');
 
 		$this->Smarty->assign('pageTitle',   $this->pageTitle);
 		$this->Smarty->assign('pageContent', $this->pageContent);
